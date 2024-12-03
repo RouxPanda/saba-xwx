@@ -1,0 +1,84 @@
+import React, { useRef } from 'react';
+import { useAudioPlayer } from '../context/AudioPlayerContext.jsx';
+import { singles } from '../data/singles.js';
+
+function Singles() {
+  const { playTrack } = useAudioPlayer();
+  const scrollContainerRef = useRef(null);
+
+  const scroll = (direction) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const scrollAmount = 600; // Approximately 2 cards width
+    const targetScroll = container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
+    
+    container.scrollTo({
+      left: targetScroll,
+      behavior: 'smooth'
+    });
+  };
+
+  return (
+    <section id="singles" className="min-h-screen flex flex-col justify-center py-20 px-4">
+      <h2 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-4xl font-bold uppercase tracking-tighter text-center mb-16"
+      >
+        Singles
+      </h2>
+      
+      <div className="relative px-12">
+        <button 
+          onClick={() => scroll('left')}
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:opacity-80 transition-opacity z-10"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+        
+        <button 
+          onClick={() => scroll('right')}
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:opacity-80 transition-opacity z-10"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+          </svg>
+        </button>
+        
+        <div 
+          ref={scrollContainerRef}
+          className="flex overflow-x-auto gap-8 scrollbar-hide scroll-smooth px-4"
+        >
+          {singles.map((single) => (
+            <div
+              key={single.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.02 }}
+              className="relative flex-none w-[300px] aspect-square cursor-pointer"
+              onClick={() => playTrack(single)}
+            >
+              <img 
+                src={single.cover} 
+                alt={single.title}
+                className="w-full h-full object-cover transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="#ffffff">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default Singles;
