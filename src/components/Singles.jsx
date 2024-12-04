@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useAudioPlayer } from '../context/AudioPlayerContext.jsx';
 import { singles } from '../data/singles.js';
+import FlippableCard from './FlippableCard.jsx';
 
 function Singles() {
   const { playTrack } = useAudioPlayer();
@@ -63,16 +64,7 @@ function Singles() {
               className="relative flex-none w-[300px] aspect-square cursor-pointer"
               onClick={() => playTrack(single)}
             >
-              <img 
-                src={single.cover} 
-                alt={single.title}
-                className="w-full h-full object-cover transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-70 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="#ffffff">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
+              <FlippableCard track={single} onPlay={playTrack} />
             </div>
           ))}
         </div>

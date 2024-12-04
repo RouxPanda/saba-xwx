@@ -16,15 +16,15 @@ function Header() {
   }, [lastScrollY]);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-opacity duration-300 mix-blend-difference ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50`}>
       <div className="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
         <nav>
-          <a href="#albums" className="text-white text-sm uppercase tracking-wider hover:opacity-70 transition-opacity">
+          <a href="#albums" className="text-black text-sm uppercase tracking-wider hover:opacity-70 transition-opacity">
             Discography
           </a>
         </nav>
         <nav>
-          <a href="#social" className="text-white text-sm uppercase tracking-wider hover:opacity-70 transition-opacity">
+          <a href="#social" className="text-black text-sm uppercase tracking-wider hover:opacity-70 transition-opacity">
             Connect
           </a>
         </nav>

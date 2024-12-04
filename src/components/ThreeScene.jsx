@@ -21,7 +21,7 @@ const Cube = () => {
 
 const ThreeScene = () => {
   return (
-    <Canvas style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }}>
+    <Canvas className='noise-container' style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }}>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
         <Cube />

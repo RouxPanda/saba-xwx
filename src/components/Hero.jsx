@@ -2,7 +2,7 @@ import React from 'react';
 
 function Hero() {
   return (
-    <section className="h-screen flex items-center justify-center relative bg-white">
+    <section className="h-screen flex items-center justify-center relative">
       <div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -10,7 +10,7 @@ function Hero() {
         className="text-center"
       >
         <h1 className="font-['Proxima_Nova'] text-[clamp(3rem,10vw,8rem)] font-bold tracking-tighter leading-none">
-          Saba2.3
+          ????????
         </h1>
       </div>
       

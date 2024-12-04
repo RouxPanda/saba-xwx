@@ -1,5 +1,4 @@
 import React from 'react';
-import './styles.css';
 import ThreeScene from './components/ThreeScene';
 import Header from './components/Header';
 import Hero from './components/Hero';
