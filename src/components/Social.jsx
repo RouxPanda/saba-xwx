@@ -30,7 +30,7 @@ function Social() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            whileHover={{ y: -4 }}
+            whilehover={{ y: -4 }}
             className="flex flex-col items-center gap-4 text-black"
           >
             <svg 

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { useAudioPlayer } from '../context/AudioPlayerContext.jsx';
 import { singles } from '../data/singles.js';
 import FlippableCard from './FlippableCard.jsx';
@@ -22,14 +23,14 @@ function Singles() {
 
   return (
     <section id="singles" className="min-h-screen flex flex-col justify-center py-20 px-4">
-      <h2 
+      <motion.h2 
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         className="text-4xl font-bold uppercase tracking-tighter text-center mb-16"
       >
         Singles
-      </h2>
+      </motion.h2>
       
       <div className="relative px-12">
         <button 
@@ -55,17 +56,16 @@ function Singles() {
           className="flex overflow-x-auto gap-8 scrollbar-hide scroll-smooth px-4"
         >
           {singles.map((single) => (
-            <div
+            <motion.div
               key={single.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.02 }}
+              whilehover={{ scale: 1.02 }}
               className="relative flex-none w-[300px] aspect-square cursor-pointer"
-              onClick={() => playTrack(single)}
             >
               <FlippableCard track={single} onPlay={playTrack} />
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

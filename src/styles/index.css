@@ -31,6 +31,34 @@ section {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
+
+/* Ensure proper sizing for grid items */
+.grid > * {
+  min-width: 0;
+  min-height: 0;
+}
+
+.winCl-btn {
+  border-left: 1px solid #fff;
+  border-top: 1px solid #fff;
+  border-right: 1px solid #848484;
+  border-bottom: 1px solid #848484;
+  background-color: transparent;
+  padding: 3px 15px 3px 15px;
+}
+
+.winCl-btn:hover,
+.winCl-btn:focus {
+  outline: 0;
+}
+
+.winCl-btn:active {
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  border-left: 1px solid #848484;
+  border-top: 1px solid #848484;
+}
+
 /*
 #hero {
   height: 100vh;
