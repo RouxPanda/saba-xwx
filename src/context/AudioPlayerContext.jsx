@@ -5,6 +5,7 @@ const AudioPlayerContext = createContext();
 export function AudioPlayerProvider({ children }) {
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTimeCode, setCurrentTimeCode] = useState(0);
 
   const playTrack = (track) => {
     if (currentTrack?.id === track.id) {

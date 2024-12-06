@@ -59,6 +59,47 @@ section {
   border-top: 1px solid #848484;
 }
 
+.winCl-btn-play {
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  border-left: 1px solid #848484;
+  border-top: 1px solid #848484;
+  background-color: #c2c6cc;
+  padding: 3px 15px 3px 15px;
+}
+
+.scale-animation {
+  display: inline-block;
+  animation: ps1-scale 3s infinite ease-in-out;
+}
+
+.animated-title {
+  font-size: 4rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  animation: ps1-spin 6s infinite ease-in-out;
+}
+/*, ps1-scale 2s infinite ease-in-out*/
+/* Animation pour la rotation */
+@keyframes ps1-spin {
+  0%, 100% {
+      transform: rotate(-5deg);
+  }
+  50% {
+      transform: rotate(5deg);
+  }
+}
+
+/* Animation pour la mise à l'échelle */
+@keyframes ps1-scale {
+  0%, 100% {
+      transform: scale(1.1);
+  }
+  50% {
+      transform: scale(1);
+  }
+}
+
 /*
 #hero {
   height: 100vh;

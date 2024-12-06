@@ -2,14 +2,14 @@ import React from 'react';
 
 function Hero() {
   return (
-    <section className="h-screen flex items-center justify-center">
+    <section className="h-screen flex items-center justify-center relative">
       <div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="text-center"
+        className="text-center scale-animation"
       >
-        <h1 className="font-['Proxima_Nova'] text-[clamp(3rem,10vw,8rem)] font-bold tracking-tighter leading-none">
+        <h1 className="font-['Proxima_Nova'] text-[clamp(3rem,10vw,8rem)] font-bold tracking-tighter leading-none animated-title">
           ????????
         </h1>
       </div>

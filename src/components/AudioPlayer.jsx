@@ -1,23 +1,80 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAudioPlayer } from '../context/AudioPlayerContext.jsx';
+import ProgressBar from './ProgressBar.jsx';
+import { formatTime } from '../utils/timeFormat.js';
 
 function AudioPlayer() {
   const { currentTrack, isPlaying, togglePlay, closePlayer } = useAudioPlayer();
   const audioRef = useRef(null);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isSeeking, setIsSeeking] = useState(false);
+  const seekIntervalRef = useRef(null);
 
   useEffect(() => {
     if (audioRef.current) {
+      const audio = audioRef.current;
+      audio.load(); // Force reload when track changes
+      
       if (isPlaying) {
-        audioRef.current.play().catch(error => {
+        audio.play().catch(error => {
           console.error("Audio playback error:", error);
           togglePlay(false);
         });
       } else {
-        audioRef.current.pause();
+        audio.pause();
       }
     }
   }, [isPlaying, currentTrack, togglePlay]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration);
+      setCurrentTime(0);
+    };
+    const handleEnded = () => {
+      setCurrentTime(0);
+      togglePlay(false);
+    };
+
+    audio.addEventListener('timeupdate', updateTime);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('canplay', handleLoadedMetadata);
+
+    return () => {
+      audio.removeEventListener('timeupdate', updateTime);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('canplay', handleLoadedMetadata);
+    };
+  }, [togglePlay]);
+
+  const startSeek = (direction) => {
+    setIsSeeking(true);
+    const seekAmount = direction === 'forward' ? 2 : -2;
+    
+    seekIntervalRef.current = setInterval(() => {
+      const audio = audioRef.current;
+      if (audio) {
+        const newTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seekAmount));
+        audio.currentTime = newTime;
+      }
+    }, 100);
+  };
+
+  const stopSeek = () => {
+    setIsSeeking(false);
+    if (seekIntervalRef.current) {
+      clearInterval(seekIntervalRef.current);
+      seekIntervalRef.current = null;
+    }
+  };
 
   if (!currentTrack) return null;
 
@@ -72,122 +129,105 @@ function AudioPlayer() {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          className="fixed top-5 right-5 bg-gray-200 p-4 border border-gray-500 z-50"
+          className='fixed top-5 right-5 bg-gray-200 p-4 border border-gray-500 z-50'
         >
-          <audio
-            ref={audioRef}
-            src={currentTrack.audioUrl}
-            onEnded={() => togglePlay(false)}
-          />
+          <audio ref={audioRef} src={currentTrack.audioUrl} onEnded={() => togglePlay(false)} />
 
-          <div className="flex flex-col items-start">
-            {/* Display Title */}
-            <div className="w-full mb-2 text-left text-green-700 font-mono text-sm">
-              <p>{currentTrack.title}</p>
-              <p>{currentTrack.artist}</p>
+          <div className='flex flex-col items-start'>
+            <div className='flex flex-col border border-gray-500 w-full mb-2 p-2 bg-gray-800'>
+              {/* Display Title */}
+              <div className='w-full text-left border border-red-700 text-green-500 font-mono text-sm'>
+                <p>{currentTrack.title}</p>
+              </div>
+              <div className='w-full text-left border border-blue-700 text-green-500 font-mono text-sm'>
+                <p>{currentTrack.artist} {formatTime(currentTime)} / {formatTime(duration)}</p>
+              </div>
             </div>
 
             {/* Playback Controls */}
-            <div className="flex items-center space-x-1 border border-gray-500 p-2 bg-gray-300">
+            <div className='flex items-center space-x-1 border border-gray-500 p-2 bg-gray-300'>
               {/* Play Button */}
-              <div className="winCl-wrap">
-              <button
-                onClick={() => togglePlay()}
-                className='winCl-btn'
+              <div className='winCl-wrap'>
+                <button
+                  onClick={() => togglePlay()}
+                  className={`${isPlaying ? "winCl-btn-play" : "winCl-btn"}`}
                   //className={`flex items-center justify-center w-8 h-6 bg-gray-100 border border-gray-500 active:bg-gray-300 ${isPlaying ? 'bg-gray-300' : ''}`}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
                 >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </button></div>
+                  <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
+                    <path d='M8 5v14l11-7z' />
+                  </svg>
+                </button>
+              </div>
 
               {/* Pause Button */}
-              <div className="winCl-wrap">
+              <div className='winCl-wrap'>
                 <button
                   onClick={() => togglePlay(false)}
                   className='winCl-btn'
                   // className="flex items-center justify-center w-8 h-6 bg-gray-100 border border-gray-500 active:bg-gray-300"
                 >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                  <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
+                    <path d='M6 19h4V5H6v14zm8-14v14h4V5h-4z' />
                   </svg>
                 </button>
               </div>
 
               {/* Stop Button */}
-              <div className="winCl-wrap">
-              <button
-                onClick={closePlayer}
-                className='winCl-btn'
+              <div className='winCl-wrap'>
+                <button
+                  onClick={closePlayer}
+                  className='winCl-btn'
                   //className="flex items-center justify-center w-8 h-6 bg-gray-100 border border-gray-500 active:bg-gray-300"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
                 >
-                  <path d="M6 6h12v12H6z" />
-                </svg>
-              </button></div>
+                  <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
+                    <path d='M6 6h12v12H6z' />
+                  </svg>
+                </button>
+              </div>
 
               {/* Previous Button */}
-              <div className="winCl-wrap">
-              <button
-                onClick={() => previousTrack()}
-                className='winCl-btn'
+              <div className='winCl-wrap'>
+                <button
+                  onClick={() => previousTrack()}
+                  className='winCl-btn'
                   //className="flex items-center justify-center w-8 h-6 bg-gray-100 border border-gray-500 active:bg-gray-300"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
                 >
-                  <path d="M6 4v16l12-8z" />
-                </svg>
-              </button></div>
+                  <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
+                    <path d='M6 4v16l12-8z' />
+                  </svg>
+                </button>
+              </div>
 
               {/* Next Button */}
-              <div className="winCl-wrap">
-              <button
-                onClick={() => nextTrack()}
-                className='winCl-btn'
+              <div className='winCl-wrap'>
+                <button
+                  onClick={() => nextTrack()}
+                  className='winCl-btn'
                   //className="flex items-center justify-center w-8 h-6 bg-gray-100 border border-gray-500 active:bg-gray-300"
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
                 >
-                  <path d="M6 4l12 8-12 8z" />
-                </svg>
-              </button>
-            </div></div>
+                  <svg width='16' height='16' viewBox='0 0 24 24' fill='currentColor'>
+                    <path d='M6 4l12 8-12 8z' />
+                  </svg>
+                </button>
+              </div>
+            </div>
 
             {/* Progress Bar */}
-            <div className="relative w-full h-4 mt-2 bg-gray-100 border border-gray-500">
-              <div
-                className="absolute top-0 left-0 h-full bg-blue-600"
-                style={{ width: `${30}%` }}
-              ></div>
+            <div className='w-full pt-2'>
+              <ProgressBar
+                currentTime={currentTime}
+                duration={duration}
+                onSeek={time => {
+                  if (audioRef.current) {
+                    audioRef.current.currentTime = time;
+                  }
+                }}
+              />
             </div>
           </div>
         </motion.div>
       )}
     </AnimatePresence>
-
   );
 }
 

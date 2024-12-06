@@ -9,14 +9,16 @@ function Albums() {
 
   return (
     <section id="albums" className="min-h-screen flex flex-col justify-center py-20 px-4">
-      <motion.h2 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-4xl font-bold uppercase tracking-tighter text-center mb-16"
-      >
-        Albums
-      </motion.h2>
+      <div className="text-center bg-black mb-16 w-1/12 mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl text-white py-1 font-bold uppercase tracking-tighter text-center"
+        >
+          Albums
+        </motion.h2>
+      </div>
       
       <motion.div 
         className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto w-full"

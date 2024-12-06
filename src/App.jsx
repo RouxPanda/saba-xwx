@@ -14,6 +14,7 @@ const App = () => {
       <div className="App">
         <ThreeScene/>
         <Header />
+        <AudioPlayer />
         <main>
           <div className='z-5 relative'>
             <Hero />
@@ -22,7 +23,6 @@ const App = () => {
             <Social />
           </div>
         </main>
-        <AudioPlayer />
       </div>
     </AudioPlayerProvider>
   );
