@@ -1,5 +1,5 @@
 // src/components/RotatingCube.js
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader";
@@ -29,26 +29,46 @@ const lerp = (start, end, t) => start + (end - start) * t; // Interpolation lin�
 
 const Perso = () => {
   const ref = useRef();
+  const [keyframes, setKeyframes] = useState([]);
 
-  // Keyframes définissant les positions et rotations
-  const keyframes = [
-    { scrollY: 0, position: [0, -0.5, 0], rotation: [0, Math.PI / 2, 0] }, // Départ
-    { scrollY: 947, position: [3.5, 0, 0], rotation: [0, Math.PI / 6, 0] }, // Keyframe 1
-    { scrollY: 1979, position: [0, 0, 0], rotation: [Math.PI / 4, Math.PI / 2, 0] }, // Keyframe 2
-    { scrollY: 2926, position: [0, 0, 1], rotation: [Math.PI / 2, Math.PI, 0] }, // Keyframe 3
-  ];
+  // Initialisation des keyframes dynamiques basés sur les sections de la page
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll("#hero, #albums, #singles, #social"));
 
-  // Fonction pour trouver les keyframes correspondants à la position de défilement actuelle
+    // Positions et rotations définies pour chaque section
+    const staticKeyframes = [
+      { position: [0, -0.5, 0], rotation: [0, Math.PI / 2, 0] }, // Section 1
+      { position: [3.5, 0, 0], rotation: [0, Math.PI / 4, 0] }, // Section 2
+      { position: [0, 0, 0], rotation: [Math.PI / 4, Math.PI / 2, 0] }, // Section 3
+      { position: [0, 0, 1], rotation: [Math.PI / 2, Math.PI, 0] }, // Section 4
+    ];
+
+    const newKeyframes = sections.map((section, index) => {
+      const rect = section.getBoundingClientRect();
+      const scrollY = window.scrollY + rect.top; // Position verticale absolue de la section
+      return {
+        scrollY, // Position où la section commence
+        position: staticKeyframes[index]?.position || [0, 0, 0],
+        rotation: staticKeyframes[index]?.rotation || [0, 0, 0],
+      };
+    });
+
+    setKeyframes(newKeyframes);
+  }, []); // Ne se déclenche qu'au montage de la page
+
+  // Trouve les keyframes correspondants pour la position actuelle de défilement
   const getKeyframes = (scrollY) => {
     for (let i = 0; i < keyframes.length - 1; i++) {
       if (scrollY >= keyframes[i].scrollY && scrollY <= keyframes[i + 1].scrollY) {
         return [keyframes[i], keyframes[i + 1]];
       }
     }
-    return [keyframes[0], keyframes[keyframes.length - 1]]; // Valeurs par défaut
+    return [keyframes[0], keyframes[keyframes.length - 1]]; // Par défaut
   };
 
   useFrame(() => {
+    if (keyframes.length < 2) return; // Pas assez de keyframes pour interpoler
+
     const scrollY = window.scrollY;
 
     const [start, end] = getKeyframes(scrollY);
@@ -98,3 +118,10 @@ const ThreeScene = () => {
 };
 
 export default ThreeScene;
+
+// const keyframes = [
+//   { scrollY: 0, position: [0, -0.5, 0], rotation: [0, Math.PI / 2, 0] }, // Départ
+//   { scrollY: 947, position: [3.5, 0, 0], rotation: [0, Math.PI / 6, 0] }, // Keyframe 1
+//   { scrollY: 1979, position: [0, 0, 0], rotation: [Math.PI / 4, Math.PI / 2, 0] }, // Keyframe 2
+//   { scrollY: 2926, position: [0, 0, 1], rotation: [Math.PI / 2, Math.PI, 0] }, // Keyframe 3
+// ];

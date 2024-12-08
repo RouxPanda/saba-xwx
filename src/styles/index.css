@@ -1,7 +1,18 @@
 @import "noise.css";
+@import "slider.scss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: 'Ms-Sans-Serif';
+  src: url('public/fonts/src/ms-sans-serif/MS Sans Serif.ttf'); 
+}
+
+:root {
+  --range-track-height: 4px;
+  --range-spacing: 10px;
+}
 
 html {
   scroll-behavior: smooth;
@@ -36,6 +47,13 @@ section {
 .grid > * {
   min-width: 0;
   min-height: 0;
+}
+
+.box-player {
+  border-right: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  border-top: 2px solid #848484;
+  border-left: 2px solid #848484;
 }
 
 .winCl-btn {
@@ -100,6 +118,9 @@ section {
   }
 }
 
+.font-pixel {
+  font-family: 'Ms-Sans-Serif';
+}
 /*
 #hero {
   height: 100vh;

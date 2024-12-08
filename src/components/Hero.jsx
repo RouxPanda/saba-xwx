@@ -2,7 +2,7 @@ import React from 'react';
 
 function Hero() {
   return (
-    <section className="h-screen flex items-center justify-center relative">
+    <section id="hero" className="h-screen flex items-center justify-center relative">
       <div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

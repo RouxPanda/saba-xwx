@@ -25,7 +25,7 @@ function Header() {
         </nav>
         <nav>
           <a href="#social" className="text-black text-sm uppercase tracking-wider hover:opacity-70 transition-opacity">
-            Connect
+            Socials
           </a>
         </nav>
       </div>

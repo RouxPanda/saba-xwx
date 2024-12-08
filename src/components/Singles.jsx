@@ -23,7 +23,7 @@ function Singles() {
 
   return (
     <section id="singles" className="min-h-screen flex flex-col justify-center py-20 px-4">
-      <div className="text-center bg-black mb-16 w-1/12 mx-auto">
+      <div className="text-center bg-black mb-16 px-3 mx-auto">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
