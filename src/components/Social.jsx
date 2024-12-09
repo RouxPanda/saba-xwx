@@ -2,10 +2,10 @@ import React from 'react';
 
 function Social() {
   const socialLinks = [
-    { name: 'Spotify', url: '#', path: './svg/spotify.svg' },
-    { name: 'SoundCloud', url: '#', path: './svg/soundcloud.svg' },
-    { name: 'Instagram', url: '#', path: './svg/instagram.svg' },
-    { name: 'Twitter', url: '#', path: './svg/twitter.svg' },
+    { name: 'Spotify', url: '#', path: 'svg/spotify.svg' },
+    { name: 'SoundCloud', url: '#', path: 'svg/soundcloud.svg' },
+    { name: 'Instagram', url: '#', path: 'svg/instagram.svg' },
+    { name: 'Twitter', url: '#', path: 'svg/twitter.svg' },
   ];
 
   return (

@@ -94,8 +94,8 @@ const Perso = () => {
     }
   });
 
-  const materials = useLoader(MTLLoader, "./model3d/crash/CETLGSAWRGLGXDA9F9SAYY2UT.mtl");
-  const obj = useLoader(OBJLoader, "./model3d/crash/CETLGSAWRGLGXDA9F9SAYY2UT.obj", (loader) => {
+  const materials = useLoader(MTLLoader, "model3d/crash/CETLGSAWRGLGXDA9F9SAYY2UT.mtl");
+  const obj = useLoader(OBJLoader, "model3d/crash/CETLGSAWRGLGXDA9F9SAYY2UT.obj", (loader) => {
     materials.preload();
     loader.setMaterials(materials);
   });

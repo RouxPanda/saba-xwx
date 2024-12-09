@@ -124,7 +124,7 @@ function AudioPlayer() {
               <div className='flex flex-row items-center w-full pt-2'>
                 <div className="relative mr-4 w-6 h-6 flex items-center justify-center bg-transparent rounded-full hover:bg-gray-600 transition-all">
                   <img 
-                    src={mute ? './svg/mute-audio-play-svgrepo-com.svg' : './svg/sound-on-music-svgrepo-com.svg'}
+                    src={mute ? 'svg/mute-audio-play-svgrepo-com.svg' : 'svg/sound-on-music-svgrepo-com.svg'}
                     className="w-4"
                     onClick={(e) => setMute(!mute)}
                   />
