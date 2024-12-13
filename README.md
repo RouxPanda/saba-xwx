@@ -1,8 +1,8 @@
-# Site web vitrine template artiste
+# Artist Showcase Website Template
 
-Un petit projet en React / Vite / Three avec player audio intégré
+A small project built with React, Vite, and Three.js, featuring an integrated audio player.
 
-➡️ 
+➡️ [Website](https://saba-xwx.vercel.app/)
 
 ![Preview](/public/previews/preview1.png)
 
